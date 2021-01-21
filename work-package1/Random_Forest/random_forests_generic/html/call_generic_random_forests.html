@@ -1,0 +1,366 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>call_generic_random_forests</title><meta name="generator" content="MATLAB 9.1"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2016-10-18"><meta name="DC.source" content="call_generic_random_forests.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><pre class="codeinput"><span class="keyword">function</span> call_generic_random_forests()
+
+<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+<span class="comment">% Name - call_generic_random_forests</span>
+<span class="comment">% Creation Date - 7th July 2015</span>
+<span class="comment">% Author - Soumya Banerjee</span>
+<span class="comment">% Website - https://sites.google.com/site/neelsoumya/</span>
+<span class="comment">%</span>
+<span class="comment">% Description - Function to load data and call generic random forests function</span>
+<span class="comment">%</span>
+<span class="comment">% Parameters -</span>
+<span class="comment">%	Input</span>
+<span class="comment">%</span>
+<span class="comment">%	Output</span>
+<span class="comment">%               BaggedEnsemble - ensemble of random forests</span>
+<span class="comment">%               Plots of out of bag error</span>
+<span class="comment">%		Example prediction</span>
+<span class="comment">%</span>
+<span class="comment">% Example -</span>
+<span class="comment">%		call_generic_random_forests()</span>
+<span class="comment">%</span>
+<span class="comment">% Acknowledgements -</span>
+<span class="comment">%           Dedicated to my mother Kalyani Banerjee, my father Tarakeswar Banerjee</span>
+<span class="comment">%				and my wife Joyeeta Ghose.</span>
+<span class="comment">%</span>
+<span class="comment">% License - BSD</span>
+<span class="comment">%</span>
+<span class="comment">% Change History -</span>
+<span class="comment">%                   7th July 2015 - Creation by Soumya Banerjee</span>
+<span class="comment">%</span>
+<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+
+
+load <span class="string">fisheriris</span>
+X = meas;
+Y = species;
+BaggedEnsemble = generic_random_forests(X,Y,60,<span class="string">'classification'</span>)
+predict(BaggedEnsemble,[5 3 5 1.8])
+</pre><pre class="codeoutput">
+BaggedEnsemble = 
+
+  TreeBagger
+Ensemble with 60 bagged decision trees:
+                    Training X:              [150x4]
+                    Training Y:              [150x1]
+                        Method:       classification
+                 NumPredictors:                    4
+         NumPredictorsToSample:                    2
+                   MinLeafSize:                    1
+                 InBagFraction:                    1
+         SampleWithReplacement:                    1
+          ComputeOOBPrediction:                    1
+ ComputeOOBPredictorImportance:                    0
+                     Proximity:                   []
+                    ClassNames:        'setosa'    'versicolor'     'virginica'
+
+
+ans =
+
+  150&times;1 cell array
+
+    'setosa'
+    'setosa'
+    'setosa'
+    'setosa'
+    'setosa'
+    'setosa'
+    'setosa'
+    'setosa'
+    'setosa'
+    'setosa'
+    'setosa'
+    'setosa'
+    'setosa'
+    'setosa'
+    'setosa'
+    'setosa'
+    'setosa'
+    'setosa'
+    'setosa'
+    'setosa'
+    'setosa'
+    'setosa'
+    'setosa'
+    'setosa'
+    'setosa'
+    'setosa'
+    'setosa'
+    'setosa'
+    'setosa'
+    'setosa'
+    'setosa'
+    'setosa'
+    'setosa'
+    'setosa'
+    'setosa'
+    'setosa'
+    'setosa'
+    'setosa'
+    'setosa'
+    'setosa'
+    'setosa'
+    'setosa'
+    'setosa'
+    'setosa'
+    'setosa'
+    'setosa'
+    'setosa'
+    'setosa'
+    'setosa'
+    'setosa'
+    'versicolor'
+    'versicolor'
+    'versicolor'
+    'versicolor'
+    'versicolor'
+    'versicolor'
+    'versicolor'
+    'versicolor'
+    'versicolor'
+    'versicolor'
+    'versicolor'
+    'versicolor'
+    'versicolor'
+    'versicolor'
+    'versicolor'
+    'versicolor'
+    'versicolor'
+    'versicolor'
+    'versicolor'
+    'versicolor'
+    'virginica'
+    'versicolor'
+    'virginica'
+    'versicolor'
+    'versicolor'
+    'versicolor'
+    'versicolor'
+    'virginica'
+    'versicolor'
+    'versicolor'
+    'versicolor'
+    'versicolor'
+    'versicolor'
+    'virginica'
+    'versicolor'
+    'versicolor'
+    'versicolor'
+    'versicolor'
+    'versicolor'
+    'versicolor'
+    'versicolor'
+    'versicolor'
+    'versicolor'
+    'versicolor'
+    'versicolor'
+    'versicolor'
+    'versicolor'
+    'versicolor'
+    'versicolor'
+    'versicolor'
+    'virginica'
+    'virginica'
+    'virginica'
+    'virginica'
+    'virginica'
+    'virginica'
+    'versicolor'
+    'virginica'
+    'virginica'
+    'virginica'
+    'virginica'
+    'virginica'
+    'virginica'
+    'virginica'
+    'virginica'
+    'virginica'
+    'virginica'
+    'virginica'
+    'virginica'
+    'versicolor'
+    'virginica'
+    'virginica'
+    'virginica'
+    'virginica'
+    'virginica'
+    'virginica'
+    'virginica'
+    'virginica'
+    'virginica'
+    'virginica'
+    'virginica'
+    'virginica'
+    'virginica'
+    'versicolor'
+    'versicolor'
+    'virginica'
+    'virginica'
+    'virginica'
+    'versicolor'
+    'virginica'
+    'virginica'
+    'virginica'
+    'virginica'
+    'virginica'
+    'virginica'
+    'virginica'
+    'virginica'
+    'virginica'
+    'virginica'
+    'virginica'
+
+
+Decision tree for classification
+ 1  if x3&lt;2.6 then node 2 elseif x3&gt;=2.6 then node 3 else setosa
+ 2  class = setosa
+ 3  if x3&lt;4.75 then node 4 elseif x3&gt;=4.75 then node 5 else versicolor
+ 4  class = versicolor
+ 5  if x1&lt;5.95 then node 6 elseif x1&gt;=5.95 then node 7 else virginica
+ 6  if x1&lt;5.85 then node 8 elseif x1&gt;=5.85 then node 9 else virginica
+ 7  if x4&lt;1.75 then node 10 elseif x4&gt;=1.75 then node 11 else virginica
+ 8  class = virginica
+ 9  class = versicolor
+10  if x2&lt;2.7 then node 12 elseif x2&gt;=2.7 then node 13 else versicolor
+11  class = virginica
+12  class = virginica
+13  if x1&lt;7.05 then node 14 elseif x1&gt;=7.05 then node 15 else versicolor
+14  class = versicolor
+15  class = virginica
+
+
+BaggedEnsemble = 
+
+  TreeBagger
+Ensemble with 60 bagged decision trees:
+                    Training X:              [150x4]
+                    Training Y:              [150x1]
+                        Method:       classification
+                 NumPredictors:                    4
+         NumPredictorsToSample:                    2
+                   MinLeafSize:                    1
+                 InBagFraction:                    1
+         SampleWithReplacement:                    1
+          ComputeOOBPrediction:                    1
+ ComputeOOBPredictorImportance:                    0
+                     Proximity:                   []
+                    ClassNames:        'setosa'    'versicolor'     'virginica'
+
+
+ans =
+
+  cell
+
+    'virginica'
+
+</pre><img vspace="5" hspace="5" src="call_generic_random_forests_01.png" alt=""> <img vspace="5" hspace="5" src="call_generic_random_forests_02.png" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2016b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+function call_generic_random_forests()
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Name - call_generic_random_forests
+% Creation Date - 7th July 2015
+% Author - Soumya Banerjee
+% Website - https://sites.google.com/site/neelsoumya/
+%
+% Description - Function to load data and call generic random forests function
+%
+% Parameters - 
+%	Input	
+%
+%	Output
+%               BaggedEnsemble - ensemble of random forests
+%               Plots of out of bag error
+%		Example prediction	
+%
+% Example -
+%		call_generic_random_forests()
+%
+% Acknowledgements -
+%           Dedicated to my mother Kalyani Banerjee, my father Tarakeswar Banerjee
+%				and my wife Joyeeta Ghose.
+%
+% License - BSD
+%
+% Change History - 
+%                   7th July 2015 - Creation by Soumya Banerjee
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+load fisheriris
+X = meas;
+Y = species;
+BaggedEnsemble = generic_random_forests(X,Y,60,'classification')
+predict(BaggedEnsemble,[5 3 5 1.8])
+
+##### SOURCE END #####
+--></body></html>
