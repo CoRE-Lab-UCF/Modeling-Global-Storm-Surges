@@ -5,7 +5,7 @@ The results of the first work-package are published in Frontiers Marince Science
 
 ![alt text](https://www.frontiersin.org/files/Articles/512653/fmars-07-00260-HTML/image_m/fmars-07-00260-g002.jpg)
 
-##  Reference:
+##  Reference/Citation
 
 > Tadesse M., Wahl T. and Cid A. (2020). Data-Driven Modeling of Global Storm Surges. Frontiers in Marine Science, 7:260. https://doi.org/10.3389/fmars.2020.00260
 
