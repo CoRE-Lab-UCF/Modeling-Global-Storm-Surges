@@ -1,0 +1,17 @@
+#change directory
+setwd("G:/report/year-3/07-Fall-2020/#3Paper/data/changePointTimeSeries/mamun-cpt-approach/obsSurge/annualSTD")
+
+#run the bcp command
+#first remove nans 
+x = x[!is.na(x$value),1:3]
+
+mBcp <- bcp(x$value)
+
+#concatenate results
+res <- cbind(x$year, mBcp$posterior.mean, mBcp$posterior.prob)
+
+#change directory
+setwd("G:/report/year-3/07-Fall-2020/#3Paper/data/changePointTimeSeries/mamun-cpt-approach/obsSurge/orgnBCP")
+
+#save as csv
+write.csv(res, "wellingtonBCP.csv")

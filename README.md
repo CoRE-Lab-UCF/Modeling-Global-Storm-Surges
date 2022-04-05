@@ -14,6 +14,8 @@ Under this project, a database of "[Global Storm Surge Reconstructions (GSSR)](h
 </p>
 
 
+The work also includes change point detection and trend analysis of reconstructed surges that cover the 1836-2019 period.
+
 
 
 ##  Reference/Citation

@@ -1,0 +1,15 @@
+#get changepoints using cpt.meanvar
+mBseg <- cpt.meanvar(x$value, penalty = "None", 
+	method = "BinSeg")
+
+#get unique years
+year <- x$year[cpts(mBseg)]
+
+#append last year 
+year <- append(year, tail(x$year,1))
+
+#get year and mean 
+res <- cbind(year, param.est(mBseg )$mean)
+
+#save as csv
+write.csv(res, "theBatteryBINSEG.csv")
